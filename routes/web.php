@@ -9,3 +9,4 @@ Route::get("main", [FundController::class, "main"]);
 Route::get("test", [FundController::class  , "test"]);
 Route::get("set_names" , [FundController::class, "setNames"]);
 Route::get("chart", [FundController::class, "chart"]);
+Route::get("set-shakhes-kol-to-db", [FundController::class, "setShakhesKolToDb"]);
