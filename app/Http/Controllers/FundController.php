@@ -148,23 +148,6 @@ class FundController extends Controller
     }
 
     public function test(){
-        $data = DB::table("shakhes_kol")
-            ->select("date", "x_niv_inu_cl_mres_ibs")
-            // ->where("date", ">", "2021-03-19")
-            ->orderBy("date")
-            ->get()
-            ->map(function ($query){
-                return [
-                    strtotime($query->date) * 1000,
-                    intval($query->x_niv_inu_cl_mres_ibs)
-                ];
-            });
-
-        return response()->json($data);
-
-
-
-
         $spare = 0;
         $data = DB::table("haghighi_hoghooghis")->join("funds_data", "funds_data.ins_code", "=", "haghighi_hoghooghis.ins_code")
             ->orderBy("rec_date")
@@ -189,9 +172,32 @@ class FundController extends Controller
             ->toArray();
 
         // $json_data = json_encode($data["در سهام"]);
-        return response()->json(array_values($data["در اوراق بهادار مبتنی بر سپرده کالایی"]));
+        return response()->json([
+            array_values($data["در اوراق بهادار با درآمد ثابت"]),
+            array_values($data["در اوراق بهادار مبتنی بر سپرده کالایی"]),
+            array_values($data["در سهام"]),
+        ]);
         // return response()->json(array_values($data["در سهام"]));
         // return response()->json(array_values($data["در اوراق بهادار با درآمد ثابت"]));
+    }
+
+    public function shakhes_kol(){
+        $data = DB::table("shakhes_kol")
+            ->select("date", "x_niv_inu_cl_mres_ibs")
+            // ->where("date", ">", "2021-03-19")
+            ->orderBy("date")
+            ->get()
+            ->map(function ($query){
+                return [
+                    strtotime($query->date) * 1000,
+                    intval($query->x_niv_inu_cl_mres_ibs)
+                ];
+            });
+
+        return response()->json($data);
+    }
+    public function shakhes_kol_view(){
+        return view("shakhes_kol");
     }
 
     public function chart(){

@@ -25,15 +25,32 @@
                 }
             }
         },
+        // tooltip: {
+        //     formatter: function() {
+        //         // تبدیل تاریخ میلادی به شمسی در tooltip
+        //         const date = moment(this.x).format('jYYYY/jM/jD');
+        //         // جدا کردن اعداد با ","
+        //         const value = Highcharts.numberFormat(this.y, 0, '.', ',');
+        //         return `<b>${date}</b><br/>amount: ${value}`;
+        //     }
+        // },
         tooltip: {
             formatter: function() {
                 // تبدیل تاریخ میلادی به شمسی در tooltip
                 const date = moment(this.x).format('jYYYY/jM/jD');
-                // جدا کردن اعداد با ","
-                const value = Highcharts.numberFormat(this.y, 0, '.', ',');
-                return `<b>${date}</b><br/>amount: ${value}`;
-            }
+
+                // ایجاد متنی برای مقادیر هر سری
+                let values = this.points.map(point => {
+                    const value = Highcharts.numberFormat(point.y, 0, '.', ',');
+                    return `<span style="color:${point.series.color}">${point.series.name}: ${value}</span>`;
+                }).join('<br/>');
+
+                return `<b>${date}</b><br/>${values}`;
+            },
+            shared: true // برای نمایش تمام مقادیر در یک tooltip
         },
+
+
         navigator: {
             xAxis: {
                 labels: {
@@ -115,13 +132,28 @@
             }
         },
         series: [
-         {
-            type: 'spline',
-            id: 'aapl-volume',
-            name: 'Chart',
-            data: data,
-            // yAxis: 1
-        }],
+            {
+                type: 'spline',
+                id: 'aapl-volume',
+                name: 'درآمد ثابت',
+                data: data[0],
+                // yAxis: 1
+            },
+            {
+                type: 'spline',
+                id: 'aapl-volume',
+                name: 'طلا',
+                data: data[1],
+                // yAxis: 1
+            },
+            {
+                type: 'spline',
+                id: 'aapl-volume',
+                name: 'سهامی',
+                data: data[2],
+                // yAxis: 1
+            },
+    ],
         responsive: {
             rules: [{
                 condition: {
